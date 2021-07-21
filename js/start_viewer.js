@@ -3,9 +3,9 @@
 //const vConsole = new VConsole();
 //window.datgui = new dat.GUI();
 
-const AWS_ACCESSKEY_ID = 'yAWSƒAƒNƒZƒXƒL[ID(ƒrƒ…[ƒA—p)z';
-const AWS_SECRET_ACCESSKEY = 'yAWSƒV[ƒNƒŒƒbƒgƒAƒNƒZƒXƒL[(ƒrƒ…[ƒA—p)z';
-const SIGNALING_CHANNEL_NAME = 'yAWSƒVƒOƒiƒŠƒ“ƒOƒ`ƒƒƒlƒ‹–¼z';
+const AWS_ACCESSKEY_ID = 'ã€AWSã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼ID(ãƒ“ãƒ¥ãƒ¼ã‚¢ç”¨)ã€‘';
+const AWS_SECRET_ACCESSKEY = 'ã€AWSã‚·ãƒ¼ã‚¯ãƒ¬ãƒƒãƒˆã‚¢ã‚¯ã‚»ã‚¹ã‚­ãƒ¼(ãƒ“ãƒ¥ãƒ¼ã‚¢ç”¨)ã€‘';
+const SIGNALING_CHANNEL_NAME = 'ã€AWSã‚·ã‚°ãƒŠãƒªãƒ³ã‚°ãƒãƒ£ãƒãƒ«åã€‘';
 const SIGNALING_CLIENT_ID = "";
 const VIEW_WIDHT = 640;
 const VIEW_HEIGHT = 480;
