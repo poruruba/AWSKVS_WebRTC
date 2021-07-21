@@ -92,7 +92,7 @@
         </select>
         <label>vmd</label>
         <select class="form-control" v-model:number="selecting.vmd_index" v-on:change="vmd_change()">
-          <option value='-1' disabled selected>選択してください</option>
+          <option value='-1' selected>選択してください</option>
           <option v-for="(value, index) in animation_list" v-bind:value="index">{{value.title}}</option>
         </select>
       </div>
