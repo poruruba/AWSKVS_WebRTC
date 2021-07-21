@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline'; style-src * 'unsafe-inline'; media-src *; img-src * data: content: blob:;">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css" integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="css/start.css">
+  <script src="js/methods_bootstrap.js"></script>
+  <script src="js/components_bootstrap.js"></script>
+  <script src="js/components_utils.js"></script>
+  <script src="js/vue_utils.js"></script>
+  <script src="js/gql_utils.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/vconsole/dist/vconsole.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/build/three.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r106/examples/js/libs/mmdparser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r125/examples/js/libs/ammo.wasm.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/loaders/MMDLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/animation/MMDAnimationHelper.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/animation/CCDIKSolver.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/animation/MMDPhysics.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r128/examples/js/controls/OrbitControls.js"></script>
+
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.949.0.min.js"></script>
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script src="https://unpkg.com/amazon-kinesis-video-streams-webrtc/dist/kvs-webrtc.min.js"></script>
+
+  <title>WebRTC Broadcast : Master(MMD)</title>
+</head>
+<body>
+    <div id="top" class="container-fluid">
+      <h1>WebRTC Broadcast : Master(MMD)</h1>
+      <hr>
+
+      <collapse-panel id="webrtc_config_panel" class="panel-default" title="KVSWebRTC">
+        <span slot="content">
+          <div class="panel-body">
+            <label class="title">AWS_ACCESSKEY_ID</label>
+            <input type="text" class="form-control" v-model="aws_accesskey_id">
+            <label class="title">AWS_SECRET_ACCESSKEY</label>
+            <input type="password" class="form-control" v-model="aws_secret_accesskey">
+            <label class="title">SIGNALING_CHANNEL_NAME</label>
+            <input type="text" class="form-control" v-model="signaling_channel_name">
+            <br>
+            <button class="btn btn-primary" v-on:click="stream_start" v-bind:disabled="webrtc_opened">Start Master</button>
+          </div>
+          <div class="panel-footer">
+            <button class="btn btn-default" v-on:click="panel_close('#webrtc_config_panel')">閉じる</button>
+          </div>
+        </span>
+      </collapse-panel>
+      <div class="form-inline">
+        <label>connected</label> {{webrtc_opened}}
+        <label>FPS</label>
+        <input type="number" class="form-control" v-model="mmd_fps">
+        <button class="btn btn-primary" v-on:click="stream_stop" v-bind:disabled="!webrtc_opened">Stop Master</button>
+      </div>
+      <br>
+
+      <div class="form-inline">
+        <label>stage</label>
+        <select class="form-control" v-model="selecting_stage">
+          <option value="">選択無し</option>
+          <option v-for="(value, index) in stage_list" v-bind:value="value.fname">{{value.title}}</option>
+        </select>
+        <label>model</label>
+        <select class="form-control" v-model:number="selecting.index" v-on:change="select_change()">
+          <option value='-1' disabled selected>選択してください</option>
+          <option v-for="(value, index) in character_list" v-bind:value="index">{{value.title}}</option>
+        </select>
+        <label>vmd</label>
+        <select class="form-control" v-model:number="selecting.vmd_index" v-on:change="vmd_change()">
+          <option value='-1' disabled selected>選択してください</option>
+          <option v-for="(value, index) in animation_list" v-bind:value="index">{{value.title}}</option>
+        </select>
+      </div>
+      <div class="form-inline">
+        <label>pause</label> {{selecting.pause}}
+        <button class="btn btn-default" v-on:click="pause_resume()"><span v-if="selecting.pause">resume</span><span v-else>pause</span></button>
+        <button class="btn btn-default" v-on:click="mmd_stop">Stop</button>
+      </div>
+      <br>
+
+      <div>
+        <canvas id="canvas_0" class="img-thumbnail" v-bind:width="width + 'px'" v-bind:height="height + 'px'"></canvas>
+      </div>
+      <div class="form-inline">
+        <label>sendMessage</label>
+        <input type="text" class="form-control" v-model="message_data">
+        <button class="btn btn-default" v-on:click="send_message">Send</button>
+      </div>
+      <br>
+      <pre class="pre-scrollable">{{message_logs}}</pre>
+      <br>
+      <br>
+
+      <!-- for progress-dialog -->
+      <progress-dialog v-bind:title="progress_title"></progress-dialog>
+    </div>
+
+  <script src="js/MmdView.js"></script>
+  <script src="js/webrtc_master.js"></script>
+  <script src="js/start_mmd.js"></script>
+</body>
