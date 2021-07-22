@@ -22,7 +22,7 @@ var vue_options = {
         },
         item_add: function(type){
             this.list_item[type].list.push({ title: this.current_item[type].title, fname: this.current_item[type].fname});
-            this.list_item = JSON.parse(JSON.stringify(this.list_item));
+            this.$set(this.list_item, type, this.list_item[type]);
 
             Cookies.set(this.list_name[type], this.list_item[type], { expires: 365 });
         },
@@ -34,7 +34,7 @@ var vue_options = {
                 return;
             this.list_item[type].list.splice(index, 1);
             this.list_index[type] = -1;
-            this.list_item = JSON.parse(JSON.stringify(this.list_item));
+            this.$set(this.list_item, type, this.list_item[type]);
             Cookies.set(this.list_name[type], this.list_item[type], { expires: 365 });
             this.current_item[type].title = "";
             this.current_item[type].fname = "";
