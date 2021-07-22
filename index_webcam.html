@@ -52,6 +52,13 @@
             <input type="password" class="form-control" v-model="aws_secret_accesskey">
             <label class="title">SIGNALING_CHANNEL_NAME</label>
             <input type="text" class="form-control" v-model="signaling_channel_name">
+            <div class="form-inline">
+              <label>facingmode</label>
+              <select class="form-control" v-model="facingmode">
+                <option value="user">user</option>
+                <option value="environment">environment</option>
+              </select>
+            </div>
             <br>
             <button class="btn btn-primary" v-on:click="webcam_start" v-bind:disabled="webrtc_opened">Start Master</button>
           </div>
