@@ -63,6 +63,8 @@
             <input type="password" class="form-control" v-model="aws_secret_accesskey">
             <label class="title">SIGNALING_CHANNEL_NAME</label>
             <input type="text" class="form-control" v-model="signaling_channel_name">
+            <label>FPS</label>
+            <input type="number" class="form-control" v-model="mmd_fps">
             <br>
             <button class="btn btn-primary" v-on:click="stream_start" v-bind:disabled="webrtc_opened">Start Master</button>
           </div>
@@ -73,8 +75,6 @@
       </collapse-panel>
       <div class="form-inline">
         <label>connected</label> {{webrtc_opened}}
-        <label>FPS</label>
-        <input type="number" class="form-control" v-model="mmd_fps">
         <button class="btn btn-primary" v-on:click="stream_stop" v-bind:disabled="!webrtc_opened">Stop Master</button>
       </div>
       <br>
