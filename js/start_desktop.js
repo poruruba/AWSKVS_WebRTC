@@ -31,7 +31,7 @@ var vue_options = {
         desktop_stop: function(){
             if (this.stream) {
                 this.stream.getTracks().forEach(track => track.stop());
-                var video = $('#video_0')[0];
+                var video = document.querySelector('#video_0');
                 video.srcObject = null;
                 this.stream = null;
             }
@@ -41,7 +41,7 @@ var vue_options = {
                 video: { width: { ideal: this.width }, height: { ideal: this.height } },
                 audio: true,
             };
-            var video = $('#video_0')[0];
+            var video = document.querySelector('#video_0');
             this.stream = await navigator.mediaDevices.getDisplayMedia(constraints);
             video.srcObject = this.stream;
 
