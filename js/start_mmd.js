@@ -34,8 +34,6 @@ var vue_options = {
         message_logs: '',
         message_data: '',
         signalingClient: null,
-        source_select: "desktop",
-        source_connected: null,
     },
     computed: {
     },
