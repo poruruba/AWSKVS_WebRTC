@@ -24,6 +24,7 @@ var vue_options = {
         message_data: '',
         signalingClient: null,
         stream: null,
+        facingmode: "user",
     },
     computed: {
     },
@@ -44,7 +45,7 @@ var vue_options = {
                 });
 
             const constraints = {
-                video: { width: { ideal: this.width }, height: { ideal: this.height } },
+                video: { facingMode: this.facingmode, width: { ideal: this.width }, height: { ideal: this.height } },
                 audio: true,
             };
             var video = $('#video_0')[0];
