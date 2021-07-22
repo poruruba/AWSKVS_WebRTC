@@ -57,7 +57,7 @@ var vue_options = {
             if (this.selecting.mmd)
                 this.selecting.mmd.dispose();
 
-            this.selecting.mmd = new MmdView($('#canvas_0')[0], this.width, this.height);
+            this.selecting.mmd = new MmdView(document.querySelector('#canvas_0'), this.width, this.height);
             try {
                 this.progress_open();
                 await this.selecting.mmd.loadWithAnimations(
